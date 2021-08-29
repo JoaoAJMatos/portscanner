@@ -1,6 +1,13 @@
 import socket
 from IPy import IP
 
+def scan(target):
+    targetIP = resolveDomain(target)
+    print(f"\n[-] Scanning Target: {str(target)}")
+
+    for port in range(1, 100):
+        scanPort(targetIP, port)
+
 def resolveDomain(target):
     try: # Checks if the target argument is a valid IP address and returns it if 1
         IP(target)
@@ -11,14 +18,17 @@ def resolveDomain(target):
 def scanPort(target, port):
     try:
         sock = socket.socket()
-        sock.settimeout(0.5)
+        sock.settimeout(0.05)
         sock.connect((target, port))
-        print(f"[-] Port {str(port)} is open")
+        print(f"[+] Port {str(port)} is open")
     except:
-        print(f"[-] Port {str(port)} is closed")
+        #print(f"[-] Port {str(port)} is closed")
+        pass
 
-target   = input('[+] Enter target hostname or IP: ')
-targetIP = resolveDomain(target)
+targets  = input("[+] Enter target/s hostname or IP (split targets with ','): ")
 
-for port in range(75, 85):
-    scanPort(targetIP, port)
+if "," in targets:
+    for target in targets.split(','):
+        scan(target.strip(' '))
+else:
+    scan(targets)
