@@ -34,10 +34,13 @@ def scanPort(target, port):
         #print(f"[-] Port {str(port)} is closed")
         pass
 
-targets  = input("[+] Enter target/s hostname or IP (split targets with ','): ")
 
-if "," in targets:
-    for target in targets.split(','):
-        scan(target.strip(' '))
-else:
-    scan(targets)
+if __name__ == "__main__":
+
+    targets  = input("[+] Enter target/s hostname or IP (split targets with ','): ")
+
+    if "," in targets:
+        for target in targets.split(','):
+            scan(target.strip(' '))
+    else:
+        scan(targets)
