@@ -15,12 +15,21 @@ def resolveDomain(target):
     except: # If the target isn't a valid IP address the function will try to resolve the IP
         return socket.gethostbyname(target)
 
+def getBanner(socket):
+    return socket.recv(1024)
+
 def scanPort(target, port):
     try:
         sock = socket.socket()
-        sock.settimeout(0.05)
+        sock.settimeout(0.1)
         sock.connect((target, port))
-        print(f"[+] Port {str(port)} is open")
+
+        try: # Tries to get the service that's running on the port by attempting to get information about the banner of the service
+             # Warning: You wont be able to recieve the banner on most of the websites. 
+            banner = getBanner(sock)
+            print(f"[+] Open port {str(port)} running :" + str(banner.decode().strip('\n')))
+        except:
+            print(f"[+] Open port {str(port)}")
     except:
         #print(f"[-] Port {str(port)} is closed")
         pass
